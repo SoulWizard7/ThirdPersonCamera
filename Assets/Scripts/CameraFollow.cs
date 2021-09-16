@@ -19,9 +19,11 @@ public class CameraFollow : MonoBehaviour
 
     //Zoom Variables
     public float zoomSpeed;
-    private float _tempZoom = 0f;
-    [NonSerialized] public float _zoom = 0f;
+    //private float _tempZoom = 0f;
+    public float _zoom = 0f;
     public float minMaxZoomDistance = 7;
+    public float _tempZoom;
+    bool switchBack;
 
     //Other Components
     [NonSerialized] public bool hitsWall;
@@ -70,17 +72,31 @@ public class CameraFollow : MonoBehaviour
 
     void CamZoom()
     {
-        if (Input.GetAxisRaw("Mouse ScrollWheel") != 0)
+        if(Input.GetButtonDown("Fire2")){ _tempZoom = _zoom; }
+        if(Input.GetButtonUp("Fire2")) { switchBack = true; }
+        
+        if (_gm.isAimingCameraMode)
+        {
+            _zoom = _gm.aimZoom;
+            switchBack = true;
+        }
+        else if (!_gm.isAimingCameraMode && switchBack)
+        {
+            switchBack = false;
+            _zoom = _tempZoom;
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") != 0)
         {
             MouseWheelZoom(Input.GetAxisRaw("Mouse ScrollWheel"));
+            _tempZoom = _zoom;
         }
     }
 
     void MouseWheelZoom(float direction)
     {
-        _tempZoom = direction * zoomSpeed;
-        _zoom += _tempZoom;
-
+        float zoom = direction * zoomSpeed;
+        _zoom += zoom;
+        
         if (_zoom > minMaxZoomDistance) _zoom = minMaxZoomDistance;
         if (_zoom < -minMaxZoomDistance) _zoom = -minMaxZoomDistance;
     }

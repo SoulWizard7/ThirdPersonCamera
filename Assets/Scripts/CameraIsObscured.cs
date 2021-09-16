@@ -15,7 +15,7 @@ public class CameraIsObscured : MonoBehaviour
 
     //Raycast variables
     [NonSerialized]public RaycastHit[] hits;
-    [SerializeField] private LayerMask wallLayerMask;
+    public LayerMask wallLayerMask;
     private RaycastHit wallHit;
     private float sphereCastRadius = 0.25f;
 

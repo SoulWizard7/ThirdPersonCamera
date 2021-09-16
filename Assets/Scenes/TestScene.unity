@@ -2027,6 +2027,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 157179120560773582, guid: a3d371b26752594498346e2ceb3b47cf, type: 3}
+      propertyPath: cameraOffsetModifier
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 157179120560773582, guid: a3d371b26752594498346e2ceb3b47cf, type: 3}
+      propertyPath: cameraToAimingLerpValue
+      value: 0.04
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3d371b26752594498346e2ceb3b47cf, type: 3}
 --- !u!1001 &380466938606285376
