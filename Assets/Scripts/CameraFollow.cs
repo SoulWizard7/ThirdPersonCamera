@@ -4,26 +4,27 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     //Transforms & Vectors
-    [NonSerialized]public Transform _playerCameraParent;
+    private Transform _playerCameraParent;
     private Transform _playerCamPoint;
-
     private Vector3 _whereCamWantsToBe;
     private Vector3 _currentVelocity = Vector3.zero;
     
     //Mouse Look Variables
     private float _mouseY;
-    public float yRotateSpeed = 10;
-    public float xRotateSpeed = 2000;
-    private float _smoothDampSpeed = 0.05f;
-    public float wallOffset;
+    public float mouseSensitivity = 2000;
+    private const float _smoothDampSpeed = 0.08f;
+    
+    //private float wallOffset = 0.8f;
+    private const float mouseLookMax = 45f;
+    private const float mouseLookMin = -80f;
+    private const float aimMouseLookMin = -45f;
 
     //Zoom Variables
     public float zoomSpeed;
-    //private float _tempZoom = 0f;
-    public float _zoom = 0f;
-    public float minMaxZoomDistance = 7;
-    public float _tempZoom;
-    bool switchBack;
+    [NonSerialized]public float _zoom = 0f;
+    private const float minMaxZoomDistance = 7;
+    private float _tempZoom;
+    private bool switchBack;
 
     //Other Components
     [NonSerialized] public bool hitsWall;
@@ -52,17 +53,17 @@ public class CameraFollow : MonoBehaviour
     {
         //mouseLook sideways
         float mouseX = Input.GetAxis("Mouse X");
-        float rotateMoveX = mouseX * xRotateSpeed * Time.deltaTime;
+        float rotateMoveX = mouseX * mouseSensitivity * Time.deltaTime;
         _playerCameraParent.transform.RotateAround(transform.position, Vector3.up, rotateMoveX);
     }
 
     void MouseLookHorizontal()
     {
         //Mouse Look up/down
-        if(_gm.invertMouseLook) {_mouseY += Input.GetAxis("Mouse Y") * yRotateSpeed * Time.deltaTime;}
-        else {_mouseY -= Input.GetAxis("Mouse Y") * yRotateSpeed * Time.deltaTime;}
+        if(_gm.invertMouseLook) {_mouseY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;}
+        else {_mouseY -= Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;}
         
-        _mouseY = Mathf.Clamp(_mouseY, -80, 45);
+        _mouseY = Mathf.Clamp(_mouseY, _gm.isAimingCameraMode ? aimMouseLookMin : mouseLookMin, mouseLookMax);
 
         _playerCameraParent.transform.rotation = Quaternion.Euler(
             _mouseY,
@@ -88,7 +89,6 @@ public class CameraFollow : MonoBehaviour
         else if (Input.GetAxisRaw("Mouse ScrollWheel") != 0)
         {
             MouseWheelZoom(Input.GetAxisRaw("Mouse ScrollWheel"));
-            _tempZoom = _zoom;
         }
     }
 
@@ -108,6 +108,8 @@ public class CameraFollow : MonoBehaviour
 
     void CamFollow()
     {
+        float wallOffset = 0.8f;
+        
         if (!hitsWall)
         {
             _whereCamWantsToBe = Vector3.MoveTowards(_playerCamPoint.transform.position, _playerCameraParent.position, _zoom);

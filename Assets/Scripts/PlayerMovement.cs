@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //Movement Variables
-    private float speed = 12f;
+    private float speed = 5f;
     Vector3 velocity;
     private Vector3 _move;
     
@@ -20,16 +20,13 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     
     // Rotate & Mouse Variables
-    public float rotateSpeed = 1f;
-    public float newRotateSpeed = 1f;
-    private float x;
-    private float z;
+    //private float x;
+    //private float z;
     private float turnSmoothVelocity = 0f;
     private float turnSmoothTime = 0.1f;
 
     // Other Components
     private GameManager _gm;
-    private CameraFollow _cameraFollow;
     private Transform _cam;
     private CharacterController controller;
 
@@ -37,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         _cam = Camera.main.transform;
-        _cameraFollow = _cam.GetComponent<CameraFollow>();
         controller = GetComponent<CharacterController>();
     }
 
@@ -86,8 +82,8 @@ public class PlayerMovement : MonoBehaviour
 
     void RegularMovement()
     {
-        z = Input.GetAxisRaw("Vertical");
-        x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxis("Horizontal");
 
         _move = _cam.right * x + _cam.forward * z;
         _move.y = 0;
@@ -106,8 +102,9 @@ public class PlayerMovement : MonoBehaviour
 
     void AimMovement()
     {
-        z = Input.GetAxis("Vertical");
-        x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxis("Horizontal");
+        
         _move = _cam.right * x + _cam.forward * z;
         _move.y = 0;
         _move = _move.normalized;

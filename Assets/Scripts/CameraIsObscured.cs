@@ -81,10 +81,7 @@ public class CameraIsObscured : MonoBehaviour
             
             ObjectCanFade canFade = hit.transform.GetComponent<ObjectCanFade>();
 
-            if (canFade)
-            {
-                canFade.enabled = true;
-            }
+            if (canFade) { canFade.enabled = true; }
         }
     }
 

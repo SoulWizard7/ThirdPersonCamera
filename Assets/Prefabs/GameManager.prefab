@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invertMouseLook: 0
   lockCursorAtStart: 1
-  cameraOffsetModifier: 1
+  aimZoom: 3.2
+  useAimOffsetSystem: 0
+  cameraOffsetModifier: 1.5
   cameraToAimingLerpValue: 0.04
-  aimZoom: 4
